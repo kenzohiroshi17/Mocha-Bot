@@ -6,9 +6,9 @@ module.exports = {
 		author: 'KENLIEPLAYS',
 		countDown: 3,
 		role: 0,
-		shortDescription: 'Simsimi ChatBot by Simsimi.fun',
+		shortDescription: 'Talk to the sim',
 		longDescription: {
-			en: 'Chat with simsimi'
+			en: 'Chat with simisim'
 		},
 		category: 'sim',
 		guide: {
@@ -57,7 +57,7 @@ module.exports = {
 
 async function getMessage(yourMessage, langCode) {
 	try {
-		const res = await axios.get(`https://simsimi.fun/api/v2/?mode=talk&lang=ph&message=${yourMessage}&filter=false`);
+		const res = await axios.get(`https://sim-api-ctqz.onrender.com/sim?query=${content`);
 		if (!res.data.success) {
 			throw new Error('API returned a non-successful message');
 		}
