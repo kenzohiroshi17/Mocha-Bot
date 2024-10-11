@@ -1,69 +1,39 @@
 const axios = require("axios");
+
 module.exports = {
-	config: {
-		name: 'sim',
-		version: '1.2',
-		author: 'KENLIEPLAYS',
-		countDown: 3,
-		role: 0,
-		shortDescription: 'Talk to the sim',
-		longDescription: {
-			en: 'Chat with simisim'
-		},
-		category: 'sim',
-		guide: {
-			en: '   {pn} <word>: chat with simsimi'
-				+ '\n   Example:{pn} hi'
-		}
-	},
+  config: {
+    name: 'sim',
+    aliases: ['simsimi'],
+    version: '1.0',
+    author: 'Eugene Aguilar', // fixed by Alex api by Mark Hitsuraan
+    countDown: 3,
+    role: 0,
+    shortDescription: 'Chat with Simini',
+    longDescription: 'sim your message',
+    category: 'fun',
+    guide: '{pn}',
+  },
 
-	langs: {
-		en: {
-			chatting: 'Already Chatting with sim...',
-			error: 'Server Down Please Be Patient'
-		}
-	},
-
-	onStart: async function ({ args, message, event, getLang }) {
-		if (args[0]) {
-			const yourMessage = args.join(" ");
-			try {
-				const responseMessage = await getMessage(yourMessage);
-				return message.reply(`${responseMessage}`);
-			}
-			catch (err) {
-				console.log(err)
-				return message.reply(getLang("error"));
-			}
-		}
-	},
-
-	onChat: async ({ args, message, threadsData, event, isUserCallCommand, getLang }) => {
-		if (!isUserCallCommand) {
-			return;
-		}
-		if (args.length > 1) {
-			try {
-				const langCode = await threadsData.get(event.threadID, "settings.lang") || global.GoatBot.config.language;
-				const responseMessage = await getMessage(args.join(" "), langCode);
-				return message.reply(`${responseMessage}`);
-			}
-			catch (err) {
-				return message.reply(getLang("error"));
-			}
-		}
-	}
-};
-
-async function getMessage(yourMessage, langCode) {
-	try {
-		const res = await axios.get(`https://sim-api-ctqz.onrender.com/sim?query=${content`);
-		if (!res.data.success) {
-			throw new Error('API returned a non-successful message');
-		}
-		return res.data.success;
-	} catch (err) {
-		console.error('Error while getting a message:', err);
-		throw err;
-	}
+  onStart: async function ({ api, event, args, reply }) {
+    try {
+      let message = args.join(" ");
+      if (!message) {
+        return api.sendMessage(`please put a message`, event.threadID, event.messageID);
       }
+
+      console.log(`Sending request to API with message: ${message}`);
+      const response = await axios.get(`https://markdevs69v2.onrender.com/api/sim/get/${message}`);
+      console.log(`API response: ${JSON.stringify(response.data)}`);
+      const respond = response.data.reply;
+
+      console.log(`Respond variable: ${respond}`);
+      console.log(`typeof respond: ${typeof respond}`);
+
+      console.log(`Sending message to user: ${respond}`);
+      api.sendMessage(respond, event.threadID, event.messageID);
+    } catch (error) {
+      console.error("An error occurred:", error);
+      api.sendMessage("Oops! Something went wrong.", event.threadID, event.messageID);
+    }
+  }
+};
