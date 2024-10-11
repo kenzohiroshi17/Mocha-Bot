@@ -12,7 +12,7 @@ const doNotDelete = "[ + | Xyza ]";
 
 module.exports = {
 	config: {
-		name: "help7",
+		name: "help",
 		version: "1.21",
 		author: "NTKhang",
 		countDown: 5,
